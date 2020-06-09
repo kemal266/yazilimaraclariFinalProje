@@ -1,7 +1,12 @@
 package tr.edu.medipol.mebis;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/ogrenciler")
@@ -18,14 +23,35 @@ public class ogrenciServisi  {
 	public List<String> ogrenciBilgileri(){
 		return ogrenciler;
 	}
-	@GetMapping("/ogrenciekle/{ogrenciAdi}")
-	public List<String> ogrenciEkle(@PathVariable String ogrenciAdi){
-		ogrenciler.add(ogrenciAdi);
+	@PostMapping("/ogrenciekle")
+	public List<String> ogrenciEkle(@RequestBody Ogrenci ogrenci){
+		ogrenciler.add(ogrenci.getOgrenciAdi() + " " + ogrenci.getOgrenciNo());
 		return ogrenciler;
 	}
-	@GetMapping("/ogrencisil/{ogrenciAdi}")
-	public List<String> ogrenciSil(@PathVariable String ogrenciAdi){
-		ogrenciler.remove(ogrenciAdi);
+	@PostMapping("/ogrencisil")
+	public List<String> ogrenciSil(@RequestBody Ogrenci ogrenci){
+		ogrenciler.remove(ogrenci.getOgrenciAdi() + " " + ogrenci.getOgrenciNo());
 		return ogrenciler;
+	}
+	
+	private static class Ogrenci {
+		private String ogrenciAdi;
+		private int ogrenciNo;
+
+		public String getOgrenciAdi() {
+			return ogrenciAdi;
+		}
+
+		public void setOgrenciAdi(String ogrenciAdi) {
+			this.ogrenciAdi = ogrenciAdi;
+		}
+
+		public int getOgrenciNo() {
+			return ogrenciNo;
+		}
+
+		public void setOgrenciNo(int ogrenciNo) {
+			this.ogrenciNo = ogrenciNo;
+		}
 	}
 }
